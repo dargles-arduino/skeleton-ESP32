@@ -22,13 +22,15 @@ class myTime
 {
   public:
   bool  running = false;
+  Timezone myTZ;
 
   /**
-   * connect
-   * Starts up the WiFi
+   * sync
+   * Assumes WiFi already started
    */
-  void sync()
+  String sync()
   {
+    myTZ.setLocation(F("GB"));
     // *** Start up the time client ***
     if(trace)Serial.print("Syncing up time: ");
     waitForSync(7);
@@ -37,7 +39,8 @@ class myTime
       running = true;
       if(trace)Serial.println("time synced");
     }
-    else if(trace)Serial.println("failed to sync time");  
-    return;    
+    else if(trace)Serial.println("failed to sync time"); 
+    String result = String(myTZ.dateTime()); //(timeStatus()); 
+    return(result);    
   }
 };
